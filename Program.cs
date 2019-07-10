@@ -36,6 +36,28 @@ namespace SortSpace
           return no_changes;
       }
 
+      public static void InsertionSortStep( int[] array, int step, int i )
+      {
+
+          for (int start = i; start < array.Length; start += step) // берём каждый элемент массива
+          {
+              for (int j = start; j - step >= i; j -= step) // сравниваем с каждым предыдущим элементом массива
+              {
+                  if (array[j - step] > array[j]) // если 
+                  {
+                      array[j] = array[j] + array[j - step];
+                      array[j - step] = array[j] - array[j - step];
+                      array[j] = array[j] - array[j - step];
+                  }
+                  else
+                  {
+                      break;
+                  }
+
+              }
+          }
+      }
+
       public static void Test()
       {
           //============== SELECTION SORT ===================
@@ -58,17 +80,20 @@ namespace SortSpace
           while (!SortLevel.BubbleSortStep(numbers3)) ;
           for (int i = 0; i < numbers3.Length; i++)
               Console.WriteLine(numbers3[i]);
+          //=============== InsertionSortStep ===============
+          int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
+          InsertionSortStep(numbers4, 3, 0);
       }
   }
 
-    //class Program
-    //{
-    //    static void Main(string[] args)
-    //    {
-    //        SortLevel.Test();
-    //        Console.ReadKey(); //pauses for any key 
-    //    }    
-    //}
+  //class Program
+  //{
+  //    static void Main(string[] args)
+  //    {
+  //        SortLevel.Test();
+  //        Console.ReadKey(); //pauses for any key 
+  //    }
+  //}
 }
 
 
