@@ -38,7 +38,6 @@ namespace SortSpace
 
       public static void InsertionSortStep( int[] array, int step, int i )
       {
-
           for (int start = i; start < array.Length; start += step) // берём каждый элемент массива
           {
               for (int j = start; j - step >= i; j -= step) // сравниваем с каждым предыдущим элементом массива
@@ -49,13 +48,35 @@ namespace SortSpace
                       array[j - step] = array[j] - array[j - step];
                       array[j] = array[j] - array[j - step];
                   }
-                  else
-                  {
-                      break;
-                  }
-
+                  else break;                  
               }
           }
+      }
+
+      public static List<int> KnuthSequence(int array_size)
+      {
+          List<int> numbers = new List<int>();
+          RecList(numbers, array_size, 0);
+
+          return numbers;
+      }
+
+      static void RecList(List<int> Array, int array_size, int N)
+      {          
+          N = 3 * N + 1;
+          if (N > array_size)
+              return; // возвращаем последнее значение
+          else
+          {
+              RecList(Array, array_size, N);
+              Array.Add(N);
+          }
+          return;
+      }
+
+      static void WriteLineItems(List<int> lists)
+      {
+          foreach (int list in lists) { Console.WriteLine(list); } // распечатать список
       }
 
       public static void Test()
@@ -83,6 +104,9 @@ namespace SortSpace
           //=============== InsertionSortStep ===============
           int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
           InsertionSortStep(numbers4, 3, 0);
+          //================= KnuthSequence =================
+          List<int> List_1 = KnuthSequence(1000);
+          WriteLineItems(List_1);
       }
   }
 
