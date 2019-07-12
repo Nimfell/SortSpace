@@ -10,14 +10,9 @@ namespace SortSpace
           int min = i;
           for (int j = i + 1; j < array.Length; j++)          
               if (array[j] < array[min])              
-                  min = j;              
-          
-          if (min != i)
-          {
-              array[i] = array[i] + array[min];   //x:=x+y;
-              array[min] = array[i] - array[min]; //y:=x-y;
-              array[i] = array[i] - array[min];   //x:=x-y;   
-          }
+                  min = j; 
+          if (min != i)          
+              SwapInArray(array, i, min);            
       }
 
       public static bool BubbleSortStep(int[] array)
@@ -27,9 +22,7 @@ namespace SortSpace
           {              
               if (array[i] > array[i + 1])
               {
-                  array[i] = array[i] + array[i + 1];   //x:=x+y;
-                  array[i + 1] = array[i] - array[i + 1]; //y:=x-y;
-                  array[i] = array[i] - array[i + 1];   //x:=x-y;
+                  SwapInArray(array, i, i + 1);
                   no_changes = false; 
               }
           }        
@@ -42,13 +35,10 @@ namespace SortSpace
           {
               for (int j = start; j - step >= i; j -= step) // сравниваем с каждым предыдущим элементом массива
               {
-                  if (array[j - step] > array[j]) // если 
-                  {
-                      array[j] = array[j] + array[j - step];
-                      array[j - step] = array[j] - array[j - step];
-                      array[j] = array[j] - array[j - step];
-                  }
-                  else break;                  
+                  if (array[j - step] > array[j]) // если                   
+                      SwapInArray(array, j, j - step);                  
+                  else 
+                      break;                  
               }
           }
       }
@@ -56,58 +46,122 @@ namespace SortSpace
       public static List<int> KnuthSequence(int array_size)
       {
           List<int> numbers = new List<int>();
-          RecList(numbers, array_size, 0);
-
+          RecList(numbers, array_size, 1);
           return numbers;
       }
 
       static void RecList(List<int> Array, int array_size, int N)
-      {          
-          N = 3 * N + 1;
-          if (N > array_size)
-              return; // возвращаем последнее значение
+      {  
+          if (N > array_size) return; 
           else
-          {
-              RecList(Array, array_size, N);
+          {   RecList(Array, array_size, 3 * N + 1);
               Array.Add(N);
-          }
-          return;
+          }          
       }
 
-      static void WriteLineItems(List<int> lists)
+      public static int ArrayChunk2(int[] M)
       {
-          foreach (int list in lists) { Console.WriteLine(list); } // распечатать список
+          int N = M[M.Length / 2];
+          int i1 = 0;
+          int i2 = M.Length - 1;
+
+          while (i1 <= i2)
+          {
+              while (M[i1] < N)
+                  i1++;
+              while (M[i2] > N)
+                  i2--;
+
+              if (i1 >= i2)
+                      break;
+              SwapInArray(M, i1, i2);
+          }
+          return N;
+
+      }
+
+      public static int ArrayChunk(int[] M)
+      {
+          int N = M[M.Length / 2];
+          int i1 = 0;
+          int i2 = M.Length - 1;
+
+          while (true)
+          {
+              while (M[i1] < N)
+                  i1++;
+              while (M[i2] > N)
+                  i2--;
+
+              if (i1 == i2 - 1 && M[i1] > M[i2])
+                  SwapInArray(M, i1, i2);
+              else
+                  if (i1 == i2 || i1 == i2 - 1 && M[i1] < M[i2])
+                      break;
+              SwapInArray(M, i1, i2);
+          }
+          return N;
+      }
+
+
+      public static void SwapInArray(int[] a, int i, int j) // поменять местами элементы в массиве
+      {
+          a[i] = a[i] + a[j];   //x:=x+y;
+          a[j] = a[i] - a[j];   //y:=x-y;
+          a[i] = a[i] - a[j];   //x:=x-y;
       }
 
       public static void Test()
       {
-          //============== SELECTION SORT ===================
-          int[] numbers = { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
-          for (int i = 0; i < numbers.Length; i++)
-              SortLevel.SelectionSortStep(numbers, i);
-          for (int i = 0; i < numbers.Length; i++)
-              Console.WriteLine(numbers[i]);
-          Console.WriteLine();
-          //-------------------------------------------------
-          int[] numbers2 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
-          for (int i = 0; i < numbers2.Length; i++)
-              SortLevel.SelectionSortStep(numbers2, i);
-          for (int i = 0; i < numbers2.Length; i++)
-              Console.WriteLine(numbers2[i]);
-          Console.WriteLine();
-          //================= BUBLE SORT ====================
-          int[] numbers3 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+          ////============== SELECTION SORT ===================
+          //Console.WriteLine("SELECTION SORT");
+          //int[] numbers = { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
+          //for (int i = 0; i < numbers.Length; i++)
+          //    SortLevel.SelectionSortStep(numbers, i);
+          //PrintArray(numbers);          
+          ////-------------------------------------------------
+          //int[] numbers2 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+          //for (int i = 0; i < numbers2.Length; i++)
+          //    SortLevel.SelectionSortStep(numbers2, i);
+          //PrintArray(numbers2);  
+        
+          ////================= BUBLE SORT ====================
+          //Console.WriteLine("BUBLE SORT");
+          //int[] numbers3 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+          //// выполнять пока сортируется
+          //while (!SortLevel.BubbleSortStep(numbers3)); 
+          //PrintArray(numbers3);
 
-          while (!SortLevel.BubbleSortStep(numbers3)) ;
-          for (int i = 0; i < numbers3.Length; i++)
-              Console.WriteLine(numbers3[i]);
-          //=============== InsertionSortStep ===============
-          int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
-          InsertionSortStep(numbers4, 3, 0);
-          //================= KnuthSequence =================
-          List<int> List_1 = KnuthSequence(1000);
-          WriteLineItems(List_1);
+          ////=============== InsertionSortStep ===============
+          //Console.WriteLine("InsertionSortStep");
+          //int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
+          //InsertionSortStep(numbers4, 3, 0);
+          //PrintArray(numbers4);  
+        
+          ////================= KnuthSequence =================
+          //Console.WriteLine("KnuthSequence");
+          //List<int> List_1 = KnuthSequence(1000);
+          //WriteLineItems(List_1);
+          //=================== ArrayChunk ====================
+          int[] numbers5 = { 7,5,6,4,3,1,2 };
+          int n = ArrayChunk2(numbers5);
+          PrintArray(numbers5);
+
       }
+      //--------------------- PRINT ---------------------------
+      public static void WriteLineItems(List<int> lists)
+      {
+          foreach (int list in lists)
+          { Console.WriteLine(list); } // распечатать список
+          Console.WriteLine();
+      }
+
+      public static void PrintArray(int[] array)
+      {
+          for (int i = 0; i < array.Length; i++)
+              Console.WriteLine(array[i]);
+          Console.WriteLine();
+      }      
   }
 
   //class Program
