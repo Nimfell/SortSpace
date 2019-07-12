@@ -100,7 +100,7 @@ namespace SortSpace
                       break;
               SwapInArray(M, i1, i2);
           }
-          return N;
+          return i2;
       }
 
 
