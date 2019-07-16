@@ -58,12 +58,23 @@ namespace SortSpace
               Array.Add(N);
           }          
       }
-
-      public static int ArrayChunk2(int[] M)
+      
+      public static void quicksort(int[] a, int l, int r)
       {
-          int N = M[M.Length / 2];
-          int i1 = 0;
-          int i2 = M.Length - 1;
+          if (l < r)
+          {
+              int q = partition(a, l, r);
+              quicksort(a, l, q);
+              quicksort(a, (q + 1), r);
+          }
+      }
+
+      public static int partition(int[] M, int i, int j)
+      {
+          
+          int N = M[(i + j)>>1];
+          int i1 = i;
+          int i2 = j;
 
           while (i1 <= i2)
           {
@@ -73,11 +84,27 @@ namespace SortSpace
                   i2--;
 
               if (i1 >= i2)
-                      break;
+                  break;
               SwapInArray(M, i1, i2);
           }
           return i2;
+      }
 
+      public static void HoareSort(int[] a, int l, int r) // не доделан
+      {
+          
+          int[] b = new int[r-l];
+          for (int i = 0; i < (r-l); i++)
+          {
+              b[i] = a[l + i];
+          }
+
+          if (l < r)
+          {
+              int q = ArrayChunk(b);
+              HoareSort(b, l, q);
+              HoareSort(b, (q + 1), r);
+          }
       }
 
       public static int ArrayChunk(int[] M)
@@ -85,25 +112,34 @@ namespace SortSpace
           int N = M[M.Length / 2];
           int i1 = 0;
           int i2 = M.Length - 1;
+          int times = 0;
 
-          while (true)
+          while (true) //i1 <= i2
           {
+              times++;
+              System.Diagnostics.Debug.Assert(times < M.Length + 10);             
               while (M[i1] < N)
                   i1++;
               while (M[i2] > N)
                   i2--;
 
               if (i1 == i2 - 1 && M[i1] > M[i2])
+              {
                   SwapInArray(M, i1, i2);
+                  ArrayChunk(M);
+                  //break;
+              }
               else
-                  if (i1 == i2 || i1 == i2 - 1 && M[i1] < M[i2])
+              {
+                  if (i1 == i2 || (i1 == i2 - 1 && M[i1] < M[i2]))
                       break;
-              SwapInArray(M, i1, i2);
+                  else
+                      SwapInArray(M, i1, i2);
+              }
           }
           return i2;
       }
-
-
+      
       public static void SwapInArray(int[] a, int i, int j) // поменять местами элементы в массиве
       {
           a[i] = a[i] + a[j];   //x:=x+y;
@@ -143,10 +179,15 @@ namespace SortSpace
           //List<int> List_1 = KnuthSequence(1000);
           //WriteLineItems(List_1);
           //=================== ArrayChunk ====================
-          int[] numbers5 = { 7,5,6,4,3,1,2 };
-          int n = ArrayChunk2(numbers5);
-          PrintArray(numbers5);
+          int[] a = { 7, 5, 6, 4, 3, 1, 2 };
+          partition(a, 0, 6);          
+          PrintArray(a);
 
+          int[] b = { 7, 5, 6, 4, 3, 1, 2 };
+          int t = ArrayChunk(b);
+          Console.WriteLine(t);
+          Console.WriteLine();        
+          PrintArray(b);         
       }
       //--------------------- PRINT ---------------------------
       public static void WriteLineItems(List<int> lists)
