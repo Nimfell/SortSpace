@@ -126,8 +126,7 @@ namespace SortSpace
               if (i1 == i2 - 1 && M[i1] > M[i2])
               {
                   SwapInArray(M, i1, i2);
-                  ArrayChunk(M);
-                  //break;
+                  return ArrayChunk(M);
               }
               else
               {
