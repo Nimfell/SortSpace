@@ -100,6 +100,25 @@ namespace SortSpace
           return i2;
       }
       //========================== Quicksort2 ===============================
+      public static void QuickSortTailOptimization(int[] tab, int left, int right)
+      {
+          int N;
+          while (left < right) // сортируем оставшуюся часть
+          {
+              N = ArrayChunk(tab, left, right);
+              if (N - left < right - N)               // определяем меньшую половину
+              {
+                  QuickSortTailOptimization(tab, left, N - 1);   // рекурсия
+                  left = N + 1;                   // слева всё отсортировано, поэтому смещаем 
+              }                                // крайний левый индикатор вправо на один от опорного элемента
+              else
+              {
+                  QuickSortTailOptimization(tab, N + 1, right);   // рекурсия
+                  right = N - 1;                   // справа всё отсортировано, поэтому смещаем 
+              }                                // крайний правый индикатор влево на один от опорного элемента
+          }
+      }
+
       public static void QuickSort(int[] array, int left, int right) // не доделан
       {
           if (left < right)
@@ -161,56 +180,66 @@ namespace SortSpace
       }
       //---------------------- TEST ----------------------------
       public static void Test()
-      {
-          ////============== SELECTION SORT ===================
-          //Console.WriteLine("SELECTION SORT");
-          //int[] numbers = { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
-          //for (int i = 0; i < numbers.Length; i++)
-          //    SortLevel.SelectionSortStep(numbers, i);
-          //PrintArray(numbers);          
-          ////-------------------------------------------------
-          //int[] numbers2 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
-          //for (int i = 0; i < numbers2.Length; i++)
-          //    SortLevel.SelectionSortStep(numbers2, i);
-          //PrintArray(numbers2);  
+      {                          /*
+          //============== SELECTION SORT ===================
+          Console.WriteLine("SELECTION SORT");
+          int[] numbers = { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
+          for (int i = 0; i < numbers.Length; i++)
+              SortLevel.SelectionSortStep(numbers, i);
+          PrintArray(numbers);          
+          //-------------------------------------------------
+          int[] numbers2 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+          for (int i = 0; i < numbers2.Length; i++)
+              SortLevel.SelectionSortStep(numbers2, i);
+          PrintArray(numbers2);  
         
-          ////================= BUBLE SORT ====================
-          //Console.WriteLine("BUBLE SORT");
-          //int[] numbers3 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
-          //// выполнять пока сортируется
-          //while (!SortLevel.BubbleSortStep(numbers3)); 
-          //PrintArray(numbers3);
+          //================= BUBLE SORT ====================
+          Console.WriteLine("BUBLE SORT");
+          int[] numbers3 = { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+          // выполнять пока сортируется
+          while (!SortLevel.BubbleSortStep(numbers3)); 
+          PrintArray(numbers3);
 
-          ////=============== InsertionSortStep ===============
-          //Console.WriteLine("InsertionSortStep");
-          //int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
-          //InsertionSortStep(numbers4, 3, 0);
-          //PrintArray(numbers4);  
-          //Console.WriteLine();
+          //=============== InsertionSortStep ===============
+          Console.WriteLine("InsertionSortStep");
+          int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
+          InsertionSortStep(numbers4, 3, 0);
+          PrintArray(numbers4);  
+          Console.WriteLine();
           //--------------------------------------
-          //int[] numbers4 = { 11, 7, 6, 5, 15, 12 ,9 ,4, 14, 3, 2, 1 , 16, 8, 10, 13};         
-          //ShellSort(numbers4);
-          //PrintArray(numbers4); 
+          int[] numbers5 = { 11, 7, 6, 5, 15, 12 ,9 ,4, 14, 3, 2, 1 , 16, 8, 10, 13};         
+          ShellSort(numbers5);
+          PrintArray(numbers5); 
           
-          ////================= KnuthSequence =================
-          //Console.WriteLine("KnuthSequence");
-          //List<int> List_1 = KnuthSequence(1000);
-          //WriteLineItems(List_1);
+          //================= KnuthSequence =================
+          Console.WriteLine("KnuthSequence");
+          List<int> List_1 = KnuthSequence(1000);
+          WriteLineItems(List_1);
           //=================== ArrayChunk ====================
-          //int[] a = { 7, 5, 6, 4, 3, 1, 2 };
-          //partition(a, 0, 6);          
-          //PrintArray(a);
-          ////-----------
-          //int[] b = { 6, 5, 7 };
-          //int t = ArrayChunk(b);
-          //Console.WriteLine(t);
-          //Console.WriteLine();
-          //PrintArray(b);  
+          int[] a = { 7, 5, 6, 4, 3, 1, 2 };
+          partition(a, 0, 6);          
+          PrintArray(a);
+          //-----------
+          int[] b = { 6, 5, 7 };
+          int t = ArrayChunk(b,0,2);
+          Console.WriteLine(t);
+          Console.WriteLine();
+          PrintArray(b);          */
           //================== Quicksort ======================
-          int[] Arr = { 11, 7, 6, 5, 15, 12 ,9 ,4, 14, 3, 2, 1 , 16, 8, 10, 13};
-          QuickSort(Arr, 0, Arr.Length - 1);
+          //int[] Arr = { 11, 7, 6, 5, 15, 12, 9, 8, 14, 3, 2, 1, 16, 4, 10, 13 };
+          //QuickSortTailOptimization(Arr, 0, Arr.Length - 1);
           //PrintArray(Arr);
+          //================== Factorial ======================
+         // Console.WriteLine(factorial(5, 1));
+
       }
+    public static int factorial(int n, int a)
+    {
+        if(n < 0)  return 0; // если отрицательное
+        if(n == 0) return 1; // если n = 0
+        if(n == 1) return a; // когда n равно или стало единицей
+        return factorial(n - 1, n * a); // вход если n > 1, a = 1 в первый раз
+    }
       
   }
 
