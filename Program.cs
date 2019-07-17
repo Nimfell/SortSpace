@@ -28,8 +28,18 @@ namespace SortSpace
           }        
           return no_changes;
       }
-
-      public static void InsertionSortStep( int[] array, int step, int i )
+      //=========================== ShellSort ============================
+      public static void ShellSort(int[] A)
+      {
+          List<int> Steps = KnuthSequence(A.Length); // создали список шагов          
+          foreach (int step in Steps)                // проходим
+          {
+              for (int s = 0; (s < step) && (s + step < A.Length); s++)
+                  InsertionSortStep(A, step, s); 
+          } 
+      }
+      
+      public static void InsertionSortStep( int[] array, int step, int i ) 
       {
           for (int start = i; start < array.Length; start += step) // берём каждый элемент массива
           {
@@ -43,7 +53,7 @@ namespace SortSpace
           }
       }
 
-      public static List<int> KnuthSequence(int array_size)
+      public static List<int> KnuthSequence(int array_size) // РАСЧЕТ ШАГА
       {
           List<int> numbers = new List<int>();
           RecList(numbers, array_size, 1);
@@ -58,7 +68,7 @@ namespace SortSpace
               Array.Add(N);
           }          
       }
-      
+      //========================= Quicksort ============================
       public static void quicksort(int[] a, int l, int r)
       {
           if (l < r)
@@ -89,35 +99,24 @@ namespace SortSpace
           }
           return i2;
       }
-
-      public static void HoareSort(int[] a, int l, int r) // не доделан
+      //========================== Quicksort2 ===============================
+      public static void QuickSort(int[] array, int left, int right) // не доделан
       {
-          
-          int[] b = new int[r-l];
-          for (int i = 0; i < (r-l); i++)
+          if (left < right)
           {
-              b[i] = a[l + i];
-          }
-
-          if (l < r)
-          {
-              int q = ArrayChunk(b);
-              HoareSort(b, l, q);
-              HoareSort(b, (q + 1), r);
+              int N = ArrayChunk(array, left, right);
+              QuickSort(array, left, N - 1);
+              QuickSort(array, N + 1, right);
           }
       }
-
-      public static int ArrayChunk(int[] M)
+      public static int ArrayChunk(int[] M, int left, int right)
       {
-          int N = M[M.Length / 2];
-          int i1 = 0;
-          int i2 = M.Length - 1;
-          int times = 0;
+          int N = M[(left + right) >> 1];     //[M.Length / 2];
+          int i1 = left;                      //0;
+          int i2 = right;                     // M.Length - 1;
 
           while (true) //i1 <= i2
           {
-              times++;
-              System.Diagnostics.Debug.Assert(times < M.Length + 10);             
               while (M[i1] < N)
                   i1++;
               while (M[i2] > N)
@@ -126,7 +125,7 @@ namespace SortSpace
               if (i1 == i2 - 1 && M[i1] > M[i2])
               {
                   SwapInArray(M, i1, i2);
-                  return ArrayChunk(M);
+                  return ArrayChunk(M, left, right);
               }
               else
               {
@@ -138,7 +137,7 @@ namespace SortSpace
           }
           return i2;
       }
-      
+      //===================================================================
       public static void SwapInArray(int[] a, int i, int j) // поменять местами элементы в массиве
       {
           a[i] = a[i] + a[j];   //x:=x+y;
@@ -146,6 +145,21 @@ namespace SortSpace
           a[i] = a[i] - a[j];   //x:=x-y;
       }
 
+      //--------------------- PRINT ---------------------------
+      public static void WriteLineItems(List<int> lists)
+      {
+          foreach (int list in lists)
+          { Console.WriteLine(list); } // распечатать список
+          Console.WriteLine();
+      }
+
+      public static void PrintArray(int[] array)
+      {
+          for (int i = 0; i < array.Length; i++)
+              Console.WriteLine(array[i]);
+          Console.WriteLine();
+      }
+      //---------------------- TEST ----------------------------
       public static void Test()
       {
           ////============== SELECTION SORT ===================
@@ -172,36 +186,32 @@ namespace SortSpace
           //int[] numbers4 = { 7, 6, 5, 4, 3, 2, 1 };
           //InsertionSortStep(numbers4, 3, 0);
           //PrintArray(numbers4);  
-        
+          //Console.WriteLine();
+          //--------------------------------------
+          //int[] numbers4 = { 11, 7, 6, 5, 15, 12 ,9 ,4, 14, 3, 2, 1 , 16, 8, 10, 13};         
+          //ShellSort(numbers4);
+          //PrintArray(numbers4); 
+          
           ////================= KnuthSequence =================
           //Console.WriteLine("KnuthSequence");
           //List<int> List_1 = KnuthSequence(1000);
           //WriteLineItems(List_1);
           //=================== ArrayChunk ====================
-          int[] a = { 7, 5, 6, 4, 3, 1, 2 };
-          partition(a, 0, 6);          
-          PrintArray(a);
-
-          int[] b = { 7, 5, 6, 4, 3, 1, 2 };
-          int t = ArrayChunk(b);
-          Console.WriteLine(t);
-          Console.WriteLine();        
-          PrintArray(b);         
+          //int[] a = { 7, 5, 6, 4, 3, 1, 2 };
+          //partition(a, 0, 6);          
+          //PrintArray(a);
+          ////-----------
+          //int[] b = { 6, 5, 7 };
+          //int t = ArrayChunk(b);
+          //Console.WriteLine(t);
+          //Console.WriteLine();
+          //PrintArray(b);  
+          //================== Quicksort ======================
+          int[] Arr = { 11, 7, 6, 5, 15, 12 ,9 ,4, 14, 3, 2, 1 , 16, 8, 10, 13};
+          QuickSort(Arr, 0, Arr.Length - 1);
+          //PrintArray(Arr);
       }
-      //--------------------- PRINT ---------------------------
-      public static void WriteLineItems(List<int> lists)
-      {
-          foreach (int list in lists)
-          { Console.WriteLine(list); } // распечатать список
-          Console.WriteLine();
-      }
-
-      public static void PrintArray(int[] array)
-      {
-          for (int i = 0; i < array.Length; i++)
-              Console.WriteLine(array[i]);
-          Console.WriteLine();
-      }      
+      
   }
 
   //class Program
