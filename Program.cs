@@ -288,7 +288,7 @@ namespace SortSpace
           //================== Quicksort ======================
           int[] Arr = { 11, 7, 6, 5, 15, 12, 9, 1, 14, 3, 2, 8, 16, 4, 10, 13 };
           QuickSortMed(Arr, 0, Arr.Length - 1);
-          PrintArray(Arr);
+          //PrintArray(Arr);
           //================== Factorial ======================
          // Console.WriteLine(factorial(5, 1));
 
