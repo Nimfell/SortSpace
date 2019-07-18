@@ -134,7 +134,7 @@ namespace SortSpace
           int i1 = left;                      //0;
           int i2 = right;                     // M.Length - 1;
 
-          while (true) //i1 <= i2
+          while (i1 <= i2) //i1 <= i2
           {
               while (M[i1] < N)
                   i1++;
@@ -155,6 +155,66 @@ namespace SortSpace
               }
           }
           return i2;
+      }
+
+      public static List<int> KthOrderStatisticsStep(int[] Array, int L, int R, int k)
+      {          
+          int N = ArrayChunk(Array, L, R);
+          if (N == k)
+          {
+              List<int> list = new List<int>();
+              list.Add(L);
+              list.Add(R);
+              return list;
+          }
+          if (N < k)          
+              L = N; 
+          else          
+              R = N; 
+          return KthOrderStatisticsStep(Array, L, R, k); 
+      }
+
+      public static void QuickSortMed(int[] A, int L, int R)
+      {
+          while (L < R) // сортируем оставшуюся часть
+          {
+              int k = (L + R) >> 1;            // индекс центра
+              List<int> list = KthOrderStatisticsStep(A, L, R, k); // нашли диапазон, где центр - это медиана
+              int N = (list[0] + list[1]) >> 1;              
+              if (N - L < R - N)               // определяем меньшую половину
+              {
+                  QuickSortMed(A, L, N - 1);   
+                  L = N + 1;                   // слева всё отсортировано, поэтому смещаем 
+              }                                // крайний левый индикатор вправо на один от опорного элемента
+              else
+              {
+                  QuickSortMed(A, N + 1, R);   
+                  R = N - 1;                   // справа всё отсортировано, поэтому смещаем 
+              }                                // крайний правый индикатор влево на один от опорного элемента
+          }
+      }
+      //---------------------
+      public static void qsort(int[] A, int l, int r) 
+      {
+          int i, j;
+          int t, x;
+          i = l; // левый
+          j = r; // правый
+          x = A[(l + r) / 2]; // медиана ? опорный
+          do
+          {
+              while (A[i] < x) i++;  
+              while (A[j] > x) j--;
+              if (i <= j)
+              {
+                  t = A[i];
+                  A[i] = A[j];
+                  A[j] = t;
+                  i++; j--;
+              }
+          } while (i <= j);
+          if (l < j) qsort(A, l, j);
+          if (i < r) qsort(A, i, r);
       }
       //===================================================================
       public static void SwapInArray(int[] a, int i, int j) // поменять местами элементы в массиве
@@ -226,9 +286,9 @@ namespace SortSpace
           Console.WriteLine();
           PrintArray(b);          */
           //================== Quicksort ======================
-          //int[] Arr = { 11, 7, 6, 5, 15, 12, 9, 8, 14, 3, 2, 1, 16, 4, 10, 13 };
-          //QuickSortTailOptimization(Arr, 0, Arr.Length - 1);
-          //PrintArray(Arr);
+          int[] Arr = { 11, 7, 6, 5, 15, 12, 9, 1, 14, 3, 2, 8, 16, 4, 10, 13 };
+          QuickSortMed(Arr, 0, Arr.Length - 1);
+          PrintArray(Arr);
           //================== Factorial ======================
          // Console.WriteLine(factorial(5, 1));
 
