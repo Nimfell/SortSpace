@@ -182,6 +182,10 @@ namespace SortSpace
       {
           N = ArrayChunk(Array, L, R);
           List<int> list = new List<int>();
+          if (N < k)
+              L = N;
+          else
+              R = N;
           list.Add(L);
           list.Add(R);
           return list;          
@@ -193,12 +197,6 @@ namespace SortSpace
           L = list[0];
           R = list[1];
           //int N = (L + R) >> 1;  // опорный элемент 
-          if (N == k)              
-              return list;
-          if (N < k)
-              L = N;
-          else
-              R = N;
           return StatisticsStep(Array, L, R, k);
       }
 
@@ -315,8 +313,8 @@ namespace SortSpace
           Console.WriteLine();
           PrintArray(b);          */
           //================== Quicksort ======================
-          int[] Arr = { 11, 7, 6, 1, 15, 12, 9, 5, 14, 3, 2, 8, 16, 4, 10, 13 };
-          QuickSortMed(Arr, 0, Arr.Length - 1);
+          //int[] Arr = { 11, 7, 6, 1, 15, 12, 9, 5, 14, 3, 2, 8, 16, 4, 10, 13 };
+          //QuickSortMed(Arr, 0, Arr.Length - 1);
           //List<int> listC = KthOrderStatisticsStep(Arr, 0, Arr.Length - 1, (0 + Arr.Length - 1) >> 1);
           //PrintArray(Arr);
           //WriteListItems(listC);
@@ -330,10 +328,10 @@ namespace SortSpace
           //PrintArray(A);
           //WriteListItems(list);
 
-          //int[] B = { 5, 6, 7, 4, 1, 2, 3 };
-          //List<int> listB = KthOrderStatisticsStep(B, 0, B.Length - 1, 0);
-          //PrintArray(B);
-          //WriteListItems(listB);
+          int[] B = { 5, 6, 7, 4, 1, 2, 3 };
+          List<int> listB = KthOrderStatisticsStep(B, 0, B.Length - 1, 0);
+          PrintArray(B);
+          WriteListItems(listB);
 
       }
     public static int factorial(int n, int a)
