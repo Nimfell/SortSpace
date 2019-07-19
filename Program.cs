@@ -128,9 +128,11 @@ namespace SortSpace
               QuickSort(array, N + 1, right);
           }
       }
+
+      public static int N; //разделитель (глобальный - чёрт чёрт чёрт...)
       public static int ArrayChunk(int[] M, int left, int right)
       {
-          int N = M[(left + right) >> 1];     //[M.Length / 2];
+          N = M[(left + right) >> 1];     //[M.Length / 2];
           int i1 = left;                      //0;
           int i2 = right;                     // M.Length - 1;
 
@@ -157,9 +159,9 @@ namespace SortSpace
           return i2;
       }
 
-      public static List<int> KthOrderStatisticsStep(int[] Array, int L, int R, int k)
-      {          
-          int N = ArrayChunk(Array, L, R);
+      public static List<int> KthOrderStatisticsStep0(int[] Array, int L, int R, int k)
+      {
+          N = ArrayChunk(Array, L, R);
           if (N == k)
           {
               List<int> list = new List<int>();
@@ -167,20 +169,47 @@ namespace SortSpace
               list.Add(R);
               return list;
           }
-          if (N < k)          
-              L = N; 
-          else          
-              R = N; 
-          return KthOrderStatisticsStep(Array, L, R, k); 
+          if (N < k)
+              L = N;
+          else
+              R = N;
+          return KthOrderStatisticsStep0(Array, L, R, k);
+      }
+      //-------------------------------------------------------------------------------
+      //------ на шаг ближе к k ------
+
+      public static List<int> KthOrderStatisticsStep(int[] Array, int L, int R, int k)
+      {
+          N = ArrayChunk(Array, L, R);
+          List<int> list = new List<int>();
+          list.Add(L);
+          list.Add(R);
+          return list;          
+      }
+      //------ достижение k ------
+      public static List<int> StatisticsStep(int[] Array, int L, int R, int k)
+      {
+          List<int> list = KthOrderStatisticsStep(Array, L, R, k);
+          L = list[0];
+          R = list[1];
+          //int N = (L + R) >> 1;  // опорный элемент 
+          if (N == k)              
+              return list;
+          if (N < k)
+              L = N;
+          else
+              R = N;
+          return StatisticsStep(Array, L, R, k);
       }
 
+      //------ сортировка с k ------
       public static void QuickSortMed(int[] A, int L, int R)
       {
           while (L < R) // сортируем оставшуюся часть
           {
               int k = (L + R) >> 1;            // индекс центра
-              List<int> list = KthOrderStatisticsStep(A, L, R, k); // нашли диапазон, где центр - это медиана
-              int N = (list[0] + list[1]) >> 1;              
+              StatisticsStep(A, L, R, k); // нашли диапазон, где центр - это медиана
+              //int N = (L + R) >> 1;               
               if (N - L < R - N)               // определяем меньшую половину
               {
                   QuickSortMed(A, L, N - 1);   
@@ -193,7 +222,7 @@ namespace SortSpace
               }                                // крайний правый индикатор влево на один от опорного элемента
           }
       }
-      //---------------------
+      //-------------------------------------------------------------------------------
       public static void qsort(int[] A, int l, int r) 
       {
           int i, j;
@@ -225,7 +254,7 @@ namespace SortSpace
       }
 
       //--------------------- PRINT ---------------------------
-      public static void WriteLineItems(List<int> lists)
+      public static void WriteListItems(List<int> lists)
       {
           foreach (int list in lists)
           { Console.WriteLine(list); } // распечатать список
@@ -286,11 +315,25 @@ namespace SortSpace
           Console.WriteLine();
           PrintArray(b);          */
           //================== Quicksort ======================
-          int[] Arr = { 11, 7, 6, 5, 15, 12, 9, 1, 14, 3, 2, 8, 16, 4, 10, 13 };
+          int[] Arr = { 11, 7, 6, 1, 15, 12, 9, 5, 14, 3, 2, 8, 16, 4, 10, 13 };
           QuickSortMed(Arr, 0, Arr.Length - 1);
+          //List<int> listC = KthOrderStatisticsStep(Arr, 0, Arr.Length - 1, (0 + Arr.Length - 1) >> 1);
           //PrintArray(Arr);
+          //WriteListItems(listC);
+       
           //================== Factorial ======================
          // Console.WriteLine(factorial(5, 1));
+
+          //================== KthOrderStatisticsStep =================
+          //int[] A = { 5, 6, 7, 4, 1, 2, 3 };
+          //List<int> list = KthOrderStatisticsStep(A, 0, A.Length - 1, 3);
+          //PrintArray(A);
+          //WriteListItems(list);
+
+          //int[] B = { 5, 6, 7, 4, 1, 2, 3 };
+          //List<int> listB = KthOrderStatisticsStep(B, 0, B.Length - 1, 0);
+          //PrintArray(B);
+          //WriteListItems(listB);
 
       }
     public static int factorial(int n, int a)
