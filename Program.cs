@@ -245,7 +245,7 @@ namespace SortSpace
           if (i < r) qsort(A, i, r);
       }
       //========================= Merge Sort =================================
-      static List<int> MergeSort(List<int> list)
+      public static List<int> MergeSort(List<int> list)
       {
           if (list.Count == 1)
           {
@@ -257,8 +257,8 @@ namespace SortSpace
           List<int> result = Merge(l1, l2);
           return result;
       }
-
-      static List<int> Merge(List<int> list1, List<int> list2)
+      
+public static List<int> Merge(List<int> list1, List<int> list2)
       {
           Int32 i1 = 0, i2 = 0;               // счетчики для листов
           List<int> merged = new List<int>(); // результирующий лист
