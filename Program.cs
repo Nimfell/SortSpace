@@ -5,6 +5,7 @@ namespace SortSpace
 {
   public static class SortLevel
   {
+      //=========================== Selection Sort Step ===================
       public static void SelectionSortStep(int[] array, int i)
       {
           int min = i;
@@ -14,7 +15,7 @@ namespace SortSpace
           if (min != i)          
               SwapInArray(array, i, min);            
       }
-
+      //=========================== Bubble Sort Step ======================
       public static bool BubbleSortStep(int[] array)
       {
           bool no_changes = true;
@@ -28,7 +29,7 @@ namespace SortSpace
           }        
           return no_changes;
       }
-      //=========================== ShellSort ============================
+      //=========================== Shell Sort ============================
       public static void ShellSort(int[] A)
       {
           List<int> Steps = KnuthSequence(A.Length); // создали список шагов          
@@ -68,7 +69,7 @@ namespace SortSpace
               Array.Add(N);
           }          
       }
-      //========================= Quicksort ============================
+      //========================= Quick Sort =============================
       public static void quicksort(int[] a, int l, int r)
       {
           if (l < r)
@@ -99,7 +100,7 @@ namespace SortSpace
           }
           return i2;
       }
-      //========================== Quicksort2 ===============================
+      //========================== Quick Sort 2 ==========================
       public static void QuickSortTailOptimization(int[] tab, int left, int right)
       {
           int N;
@@ -243,7 +244,39 @@ namespace SortSpace
           if (l < j) qsort(A, l, j);
           if (i < r) qsort(A, i, r);
       }
-      //===================================================================
+      //========================= Merge Sort =================================
+      static List<int> MergeSort(List<int> list)
+      {
+          if (list.Count == 1)
+          {
+              return list;
+          }
+          int middle = list.Count / 2;
+          List<int> l1 = MergeSort(list.GetRange(0, middle));
+          List<int> l2 = MergeSort(list.GetRange(middle, list.Count - middle));
+          List<int> result = Merge(l1, l2);
+          return result;
+      }
+
+      static List<int> Merge(List<int> list1, List<int> list2)
+      {
+          Int32 i1 = 0, i2 = 0;               // счетчики для листов
+          List<int> merged = new List<int>(); // результирующий лист
+
+          for (Int32 i = 0; i < (list1.Count + list2.Count); ++i)                // заполняем результирующий лист
+          {
+              if (i1 < list1.Count && i2 < list2.Count)                          // границы листов
+              {
+                  merged.Add(list1[i1] > list2[i2] ? list2[i2++] : list1[i1++]); // добавляем меньший элемент и сдвигает счетчик этого листа
+              }
+              else
+              {
+                  merged.Add(i2 < list2.Count ? list2[i2++] : list1[i1++]); // добавляем все элементы из оставшегося листа последовательно сравнивая                         
+              }
+          }
+          return merged; // возвращаем результирующий лист
+      }
+      //====================================================================
       public static void SwapInArray(int[] a, int i, int j) // поменять местами элементы в массиве
       {
           a[i] = a[i] + a[j];   //x:=x+y;
@@ -313,10 +346,10 @@ namespace SortSpace
           Console.WriteLine();
           PrintArray(b);          */
           //================== Quicksort ======================
-          //int[] Arr = { 11, 7, 6, 1, 15, 12, 9, 5, 14, 3, 2, 8, 16, 4, 10, 13 };
-          //QuickSortMed(Arr, 0, Arr.Length - 1);
+          int[] Arr = { 11, 7, 6, 1, 15, 12, 9, 5, 14, 3, 2, 8, 16, 4, 10, 13 };
+          QuickSortMed(Arr, 0, Arr.Length - 1);
           //List<int> listC = KthOrderStatisticsStep(Arr, 0, Arr.Length - 1, (0 + Arr.Length - 1) >> 1);
-          //PrintArray(Arr);
+          PrintArray(Arr);
           //WriteListItems(listC);
        
           //================== Factorial ======================
@@ -334,21 +367,19 @@ namespace SortSpace
           WriteListItems(listB);
 
       }
-    public static int factorial(int n, int a)
-    {
+      public static int factorial(int n, int a)
+      {
         if(n < 0)  return 0; // если отрицательное
         if(n == 0) return 1; // если n = 0
         if(n == 1) return a; // когда n равно или стало единицей
         return factorial(n - 1, n * a); // вход если n > 1, a = 1 в первый раз
-    }
-      
+      }      
   }
-
   //class Program
   //{
   //    static void Main(string[] args)
   //    {
-  //        SortLevel.Test();
+  //        //SortLevel.Test();
   //        Console.ReadKey(); //pauses for any key 
   //    }
   //}
