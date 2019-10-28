@@ -8,7 +8,7 @@ namespace SortSpace
         int count;
         public int[] SortedArray;
         public int Right, Left;
-        private int Result;
+        private string Result;
 
         public BinarySearch(int[] S_Array)
         {
@@ -19,16 +19,16 @@ namespace SortSpace
 
         public void Step(int N)
         {
-            if (Result == 1 || Result == -1) return;
+            if (Result == "+1" || Result == "-1") return;
             int middle = (Right - ((Right - Left + 1) / 2)); //делит текущий диапазон на два
             //Console.WriteLine("  Middle = " + middle);
             //Console.WriteLine("  Items  = " + (Right - Left + 1) );
             if (N == SortedArray[middle])
-            {   Result = 1;
+            {   Result = "+1";
                 return;
             }
             if (Right == Left) // значение не найдено
-            {   Result = -1;
+            {   Result = "-1";
                 return;
             }
             if (N < SortedArray[middle])
@@ -37,16 +37,16 @@ namespace SortSpace
             }
             else
                 Left = middle + 1;
-            Result = 0;
+            Result = "0";
         }
 
-        public int GetResult() { return Result; }
+        public string GetResult() { return Result; }
 
-        public int Search(int N)
+        public string Search(int N)
         {
             count = 0;
-            int result = 0;
-            while (result == 0)
+            string result = "0";
+            while (result == "0")
             {
                 count++;
                 //Console.WriteLine("  Step: " + count);
@@ -61,23 +61,23 @@ namespace SortSpace
 
         public void Reset()
         {
-            Result = 0;
+            Result = "0";
             Left = 0;
             Right = SortedArray.Length - 1;
         }
     }
-    
+
     //class Program
     //{
     //    static void Main(string[] args)
-    //    {   
+    //    {
     //        int[] arr_1 = new int[99];
 
-    //        for (int i = 0; i < arr_1.Length; i++ )
+    //        for (int i = 0; i < arr_1.Length; i++)
     //        {
     //            arr_1[i] = i + 1;
     //        }
-    //        BinarySearch Arr = new BinarySearch(arr_1);            
+    //        BinarySearch Arr = new BinarySearch(arr_1);
     //        //Console.Write(Arr.Search(49));
     //        //Arr.Reset();
     //        Console.WriteLine(Arr.Search(100));
@@ -89,6 +89,6 @@ namespace SortSpace
     //        Console.WriteLine(Arr.Search(1));
     //        Arr.Reset();
     //        Console.WriteLine(Arr.Search(2));
-    //    }        
+    //    }
     //}	
 }
